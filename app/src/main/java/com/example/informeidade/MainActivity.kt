@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -29,10 +30,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.informeidade.ui.theme.InformeIdadeTheme
+
+// Cores baseadas na print
+val RoxoTexto = Color(0xFF5C5FE0)
+val RoxoBotao = Color(0xFF5B5FC7)
+val FundoTela = Color(0xFFF5F3FA)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,75 +59,73 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TelaInicial(modifier: Modifier = Modifier) {
-    var corFundo by remember { mutableStateOf(value = Color.White) }
-    var idade by remember { mutableIntStateOf(value = 0) }
-    var identificacao by remember { mutableStateOf("") }
+    var idade by remember { mutableIntStateOf(value = 17) }
+
+    val identificacao = if (idade < 18) "MENOR" else "MAIOR"
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = corFundo),
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+            .background(color = FundoTela)
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Qual Sua idade?",
-            fontSize = 25.sp,
-            color = Color.Blue
+            text = "Qual é a sua idade?",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = RoxoTexto
         )
         Text(
-            text = "Aperte os botões para informar sua idade",
-            fontSize = 15.sp,
-            color = Color.Black
+            text = "Aperte os botões para informar a sua idade",
+            fontSize = 16.sp,
+            color = Color.DarkGray
         )
 
         Text(
             text = "$idade",
-            fontSize = 30.sp,
-            color = Color.Black
+            fontSize = 48.sp,
+            fontWeight = FontWeight.Normal,
+            color = Color.Black,
+            modifier = Modifier.padding(vertical = 16.dp)
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
-                onClick = {
-                    if (idade > 0) idade--
-                },
+                onClick = { if (idade > 0) idade-- },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
+                    containerColor = RoxoBotao,
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(5.dp)
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.size(72.dp)
             ) {
                 Icon(imageVector = Icons.Default.Remove, contentDescription = "Diminuir")
             }
 
             Button(
-                onClick = {
-                    if (idade < 180) idade++
-                },
+                onClick = { if (idade < 180) idade++ },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Blue,
+                    containerColor = RoxoBotao,
                     contentColor = Color.White
                 ),
-                shape = RoundedCornerShape(5.dp)
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.size(72.dp)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Aumentar")
             }
         }
 
-        if (idade<18){
-            identificacao = "MENOR"
-        }else if(idade>=18){
-            identificacao = "MAIOR"
-        }
-
         Text(
             text = "Você é $identificacao de idade",
-            fontSize = 30.sp,
-            color = Color.Black
+            fontSize = 26.sp,
+            fontWeight = FontWeight.Bold,
+            color = RoxoTexto,
+            modifier = Modifier.padding(top = 24.dp)
         )
     }
 }
